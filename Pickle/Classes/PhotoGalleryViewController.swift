@@ -189,10 +189,14 @@ internal final class PhotoGalleryViewController: UIViewController,
         var cell: UICollectionViewCell
         if asset.mediaType == .video {
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: GalleryVideoCell.self), for: indexPath)
-            (cell as? GalleryVideoCell)?.configure(with: asset, taggedText: text, configuration: configuration)
+            autoreleasepool {
+                (cell as? GalleryVideoCell)?.configure(with: asset, taggedText: text, configuration: configuration)
+            }
         } else {
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: GalleryPhotoCell.self), for: indexPath)
-            (cell as? GalleryPhotoCell)?.configure(with: asset, taggedText: text, configuration: configuration)
+            autoreleasepool {
+                (cell as? GalleryPhotoCell)?.configure(with: asset, taggedText: text, configuration: configuration)
+            }
         }
 
         if text != nil {

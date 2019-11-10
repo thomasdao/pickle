@@ -85,6 +85,7 @@ open class ImagePickerController: UINavigationController {
             camera.delegate = self
             return camera
         }
+        modalPresentationStyle = .fullScreen
     }
 
     /// Returns an object initialized from data in a given unarchiver.

@@ -83,8 +83,10 @@ internal class GalleryPhotoCell: UICollectionViewCell {
             contentMode: .aspectFill,
             options: options
         ) { [weak self] image, _ in
-            if let image = image, assetLocalID == self?.assetLocalID {
-                self?.imageView.image = image
+            autoreleasepool {
+                if let image = image, assetLocalID == self?.assetLocalID {
+                    self?.imageView.image = image
+                }
             }
         }
 
