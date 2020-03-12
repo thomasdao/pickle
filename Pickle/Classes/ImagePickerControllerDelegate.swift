@@ -15,6 +15,8 @@ import Photos
 /// The delegate is responsible for dismissing the picker when the operation completes.
 @objc
 public protocol ImagePickerControllerDelegate: UINavigationControllerDelegate {
+    // Tells the delegate that user has denied or restricted the permission
+    func imagePickerControllerNeedPermission(_ picker: ImagePickerController)
 
     /// Asks the delegate if the image picker should launch camera with certain permission status.
     func imagePickerController(_ picker: ImagePickerController, shouldLaunchCameraWithAuthorization status: AVAuthorizationStatus) -> Bool

@@ -92,6 +92,10 @@ final class ViewController: UIViewController,
 
     // MARK: - ImagePickerControllerDelegate
 
+    func imagePickerControllerNeedPermission(_ picker: ImagePickerController) {
+        // Show permission dialog
+    }
+
     func imagePickerController(_ picker: ImagePickerController, shouldLaunchCameraWithAuthorization status: AVAuthorizationStatus) -> Bool {
         return true
     }

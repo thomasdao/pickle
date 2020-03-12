@@ -193,9 +193,6 @@ open class ImagePickerController: UINavigationController {
     fileprivate lazy var cameraRoll: PHFetchResult<PHAssetCollection> =
         PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
 
-    /// A closure to present system permission message of photo library when the status is denied or restricted.
-    fileprivate var showPermissionErrorIfNeeded: (() -> Void)?
-
     // MARK: - UIViewController
 
     open override func viewDidLoad() {
@@ -207,7 +204,7 @@ open class ImagePickerController: UINavigationController {
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        showPermissionErrorIfNeeded?()
+        showPermissionErrorIfNeeded()
     }
 
     // MARK: - Methods
@@ -348,6 +345,12 @@ extension ImagePickerController: PhotoGalleryViewControllerDelegate {
 
 
 fileprivate extension ImagePickerController {
+    func showPermissionErrorIfNeeded() {
+        let status = PHPhotoLibrary.authorizationStatus()
+        if status == .denied || status == .restricted {
+            imagePickerDelegate?.imagePickerControllerNeedPermission(self)
+        }
+    }
 
     func shouldEnableDoneBarButtonItem(with selectedAssets: [PHAsset]) -> Bool {
         return imagePickerDelegate?.imagePickerController?(self, shouldEnableDoneBarButtonItemWithSelected: selectedAssets) ?? !selectedAssets.isEmpty
@@ -359,7 +362,7 @@ fileprivate extension ImagePickerController {
             PHPhotoLibrary.requestAuthorization { status in
                 DispatchQueue.main.async {
                     self.handle(photoLibraryPermission: status)
-                    self.showPermissionErrorIfNeeded?()
+                    self.showPermissionErrorIfNeeded()
                 }
             }
 
@@ -368,20 +371,10 @@ fileprivate extension ImagePickerController {
             galleryViewController = PhotoGalleryViewController(album: cameraRoll.firstObject, configuration: configuration)
 
         case .denied, .restricted:
-            // Workaround the issue in iOS 11 where UIImagePickerController doesn't show the permission denied message.
-            // It requires additional PHAuthorizationStatus check before presenting Pickle.ImagePickerController.
-            if #available(iOS 11.0, *) {
-                // Hide the album button and display an empty gallery with a cancel button to dismiss the image picker.
-                title = nil
-                galleryViewController = PhotoGalleryViewController()
-                return
-            }
-            let controller = systemPhotoLibraryController
-            showPermissionErrorIfNeeded = { [weak self] in
-                self?.present(controller, animated: false, completion: {
-                    self?.showPermissionErrorIfNeeded = nil
-                })
-            }
+            title = nil
+            galleryViewController = PhotoGalleryViewController()
+            showPermissionErrorIfNeeded()
+
         @unknown default:
             break
         }
