@@ -28,7 +28,7 @@ public protocol ImagePickerControllerDelegate: UINavigationControllerDelegate {
     func imagePickerController(_ picker: ImagePickerController, didFinishPickingImageAssets assets: [PHAsset])
 
     /// Tells the delegate that the user cancelled the pick operation.
-    func imagePickerControllerDidCancel(_ picker: ImagePickerController)
+    func pickleImagePickerControllerDidCancel(_ picker: ImagePickerController)
 
     /// Optional. Asks the delegate for the photo album list to display. The image picker shows the camera roll and non-smart albums if not implemented.
     @objc optional func photoAlbumsForImagePickerController(_ picker: ImagePickerController) -> [PHFetchResult<PHAssetCollection>]

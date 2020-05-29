@@ -105,7 +105,7 @@ final class ViewController: UIViewController,
         picker.dismiss(animated: true, completion: nil)
     }
 
-    func imagePickerControllerDidCancel(_ picker: ImagePickerController) {
+    func pickleImagePickerControllerDidCancel(_ picker: ImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
 

@@ -246,7 +246,7 @@ extension ImagePickerController: UIImagePickerControllerDelegate, UINavigationCo
         }, completionHandler: nil)
     }
 
-    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    public func pickleImagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         switch PHPhotoLibrary.authorizationStatus() {
         case .denied, .restricted:
             picker.dismiss(animated: false) { [weak self] in
@@ -441,7 +441,7 @@ fileprivate extension ImagePickerController {
 
     @objc
     func cancel(_ sender: UIBarButtonItem?) {
-        imagePickerDelegate?.imagePickerControllerDidCancel(self)
+        imagePickerDelegate?.pickleImagePickerControllerDidCancel(self)
     }
 
     @objc
